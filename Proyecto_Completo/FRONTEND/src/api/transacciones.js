@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:5000/api/transacciones";
+const BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api/transacciones";
 
 export async function obtenerTransacciones() {
   const respuesta = await fetch(`${BASE_URL}/`);
