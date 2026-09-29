@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # QUANTUM CORE
 
 ## Sistema de Gestión de Transacciones
@@ -126,3 +127,6 @@ Las credenciales de la base de datos se manejan mediante variables de entorno y 
 Ingeniería de Sistemas
 
 Proyecto académico — **Quantum Core**
+=======
+
+>>>>>>> 234edf86b6ae61d47a92c25bc92f7ac09a722632
