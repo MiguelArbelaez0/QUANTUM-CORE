@@ -1,128 +1,50 @@
 # QUANTUM CORE
 
-## Sistema de Gestión de Transacciones
+Sistema web Full-Stack para la gestión de transacciones empresariales, desarrollado como proyecto académico de Fundamentos de Software.
 
-Quantum Core es una aplicación web Full Stack desarrollada para gestionar transacciones empresariales mediante una arquitectura separada en Frontend, Backend y Base de Datos.
+## Descripción
 
-## 🚀 Tecnologías
+QUANTUM CORE es una aplicación web que permite registrar, consultar, actualizar y eliminar transacciones empresariales mediante una arquitectura cliente-servidor.
 
-- React + Vite
+El proyecto integra un frontend desarrollado con React y Vite, un backend desarrollado con Python y Flask, una API REST para la comunicación entre ambos componentes y una base de datos MySQL administrada mediante Prisma y ejecutada localmente con Docker.
+
+## Tecnologías utilizadas
+
+### Frontend
+
+- React
+- Vite
 - JavaScript
-- Tailwind CSS
+- CSS
+- Fetch API
+
+### Backend
+
 - Python
 - Flask
+- Flask-CORS
 - Prisma ORM
+- API REST
+
+### Base de datos
+
 - MySQL 8
 - Docker
-- Git y GitHub
 
-## 🏗️ Arquitectura
-
-```text
-Frontend
-React + Vite
-     │
-     │ HTTP / JSON
-     ▼
-Backend
-Python + Flask
-     │
-     │ Prisma
-     ▼
-Base de Datos
-MySQL + Docker
-```
-
-## ⚙️ Funcionalidades
-
-El sistema permite realizar operaciones CRUD sobre las transacciones:
-
-- Crear transacciones
-- Consultar transacciones
-- Editar transacciones
-- Eliminar transacciones
-
-Cada transacción maneja información como:
-
-- Código
-- Tipo
-- Monto
-- Impacto
-
-## 📁 Estructura
+## Arquitectura
 
 ```text
-QUANTUM-CORE-
+QUANTUM CORE
 │
-├── README.md
+├── FRONTEND
+│   ├── React
+│   ├── Vite
+│   └── CSS
 │
-└── Proyecto_Completo
-    ├── BACKEND
-    └── FRONTEND
-```
-
-## ▶️ Ejecución
-
-### 1. Iniciar MySQL
-
-```bash
-docker start empresa
-```
-
-### 2. Ejecutar Backend
-
-```bash
-cd Proyecto_Completo/BACKEND
-.\.venv\Scripts\Activate.ps1
-python app.py
-```
-
-Backend:
-
-```text
-http://127.0.0.1:5000
-```
-
-### 3. Ejecutar Frontend
-
-En otra terminal:
-
-```bash
-cd Proyecto_Completo/FRONTEND
-npm run dev
-```
-
-Frontend:
-
-```text
-http://localhost:5173/
-```
-
-## 🔌 API
-
-Ruta principal:
-
-```text
-/api/transacciones/
-```
-
-Operaciones disponibles:
-
-```text
-GET     Consultar
-POST    Crear
-PUT     Actualizar
-DELETE  Eliminar
-```
-
-## 🔐 Seguridad
-
-Las credenciales de la base de datos se manejan mediante variables de entorno y el archivo `.env` no debe subirse al repositorio.
-
-## 👨‍💻 Autor
-
-**Miguel Arbeláez Vallejo**
-
-Ingeniería de Sistemas
-
-Proyecto académico — **Quantum Core**
+└── BACKEND
+    ├── Python
+    ├── Flask
+    ├── Prisma
+    └── MySQL
+         │
+         └── Docker
