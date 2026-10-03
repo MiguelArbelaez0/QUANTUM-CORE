@@ -1,8 +1,3 @@
-/* =========================================================
-   QUANTUM CORE
-   Diseño empresarial financiero
-   ========================================================= */
-
 :root {
   --blue: #2563eb;
   --blue-dark: #1d4ed8;
@@ -34,13 +29,9 @@
 
   --border: #e2e8f0;
 
-  --shadow:
-    0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --modal-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
 }
-
-/* =========================================================
-   RESET
-   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -52,7 +43,6 @@ html {
 
 body {
   margin: 0;
-
   min-width: 320px;
 
   background: var(--gray-50);
@@ -80,18 +70,18 @@ button {
   cursor: pointer;
 }
 
-/* =========================================================
+/* =========================
    APP
-   ========================================================= */
+========================= */
 
 .app-shell {
   min-height: 100vh;
   background: var(--gray-50);
 }
 
-/* =========================================================
+/* =========================
    HEADER
-   ========================================================= */
+========================= */
 
 .topbar {
   display: flex;
@@ -110,7 +100,6 @@ button {
 .brand {
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
@@ -138,6 +127,7 @@ button {
 
   font-size: 17px;
   font-weight: 800;
+
   letter-spacing: -0.02em;
 }
 
@@ -148,10 +138,6 @@ button {
 
   font-size: 11px;
 }
-
-/* =========================================================
-   SISTEMA ACTIVO
-   ========================================================= */
 
 .system-status {
   display: inline-flex;
@@ -179,9 +165,9 @@ button {
   border-radius: 50%;
 }
 
-/* =========================================================
-   MAIN
-   ========================================================= */
+/* =========================
+   DASHBOARD
+========================= */
 
 .dashboard {
   width: min(1080px, calc(100% - 40px));
@@ -191,9 +177,9 @@ button {
   padding: 38px 0 50px;
 }
 
-/* =========================================================
+/* =========================
    TITULOS
-   ========================================================= */
+========================= */
 
 .welcome {
   margin-bottom: 24px;
@@ -210,6 +196,7 @@ button {
   font-weight: 800;
 
   letter-spacing: 0.14em;
+
   text-transform: uppercase;
 }
 
@@ -234,9 +221,9 @@ button {
   font-size: 13px;
 }
 
-/* =========================================================
-   ESTADÍSTICAS
-   ========================================================= */
+/* =========================
+   ESTADISTICAS
+========================= */
 
 .stats-grid {
   display: grid;
@@ -305,8 +292,6 @@ button {
   font-weight: 800;
 }
 
-/* Azul */
-
 .stat-icon.blue {
   color: var(--blue);
 
@@ -315,8 +300,6 @@ button {
   border: 1px solid #bfdbfe;
 }
 
-/* Verde */
-
 .stat-icon.green {
   color: var(--green);
 
@@ -324,8 +307,6 @@ button {
 
   border: 1px solid #bbf7d0;
 }
-
-/* Rojo */
 
 .stat-icon.red {
   color: var(--red);
@@ -351,6 +332,7 @@ button {
   font-weight: 700;
 
   letter-spacing: 0.07em;
+
   text-transform: uppercase;
 }
 
@@ -363,9 +345,9 @@ button {
   font-weight: 800;
 }
 
-/* =========================================================
+/* =========================
    PANELES
-   ========================================================= */
+========================= */
 
 .panel {
   margin-top: 18px;
@@ -400,9 +382,9 @@ button {
   font-weight: 800;
 }
 
-/* =========================================================
+/* =========================
    FORMULARIO
-   ========================================================= */
+========================= */
 
 .panel form {
   padding: 22px;
@@ -471,20 +453,9 @@ button {
     0 0 0 3px rgba(37, 99, 235, 0.09);
 }
 
-/* =========================================================
-   ACCIONES DEL FORMULARIO
-   ========================================================= */
-
-.form-actions {
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  margin-top: 18px;
-}
-
-/* VERDE = CREAR / CONFIRMAR */
+/* =========================
+   BOTON PRINCIPAL
+========================= */
 
 .btn-primary {
   min-height: 40px;
@@ -525,12 +496,23 @@ button {
   transform: none;
 }
 
-/* GRIS = CANCELAR */
+.form-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+/* =========================
+   CANCELAR
+========================= */
 
 .btn-secondary {
-  min-height: 38px;
+  min-height: 40px;
 
-  padding: 0 14px;
+  padding: 0 15px;
 
   color: var(--gray-700);
 
@@ -542,15 +524,70 @@ button {
 
   font-size: 11px;
   font-weight: 700;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .btn-secondary:hover {
   background: var(--gray-200);
+
+  border-color: var(--gray-400);
 }
 
-/* =========================================================
-   MENSAJE ÉXITO
-   ========================================================= */
+.btn-secondary:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+/* =========================
+   BOTON PELIGRO
+========================= */
+
+.btn-danger {
+  min-height: 40px;
+
+  padding: 0 16px;
+
+  color: var(--white);
+
+  background: var(--red);
+
+  border: 1px solid var(--red);
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-danger:hover {
+  background: var(--red-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(220, 38, 38, 0.15);
+}
+
+.btn-danger:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =========================
+   MENSAJES
+========================= */
 
 .success-message {
   margin: 0 22px;
@@ -569,10 +606,6 @@ button {
   font-weight: 700;
 }
 
-/* =========================================================
-   ERROR
-   ========================================================= */
-
 .error-message {
   margin: 0 22px;
 
@@ -590,9 +623,13 @@ button {
   font-weight: 700;
 }
 
-/* =========================================================
-   CONTADOR DE REGISTROS
-   ========================================================= */
+.modal-message {
+  margin: 18px 0 0;
+}
+
+/* =========================
+   CONTADOR
+========================= */
 
 .record-count {
   display: inline-flex;
@@ -612,9 +649,9 @@ button {
   font-weight: 700;
 }
 
-/* =========================================================
+/* =========================
    TABLA
-   ========================================================= */
+========================= */
 
 .table-wrapper {
   width: 100%;
@@ -677,11 +714,9 @@ tbody tr:last-child td {
   font-weight: 700;
 }
 
-/* =========================================================
+/* =========================
    BADGES
-   ========================================================= */
-
-/* VERDE = CRÉDITO */
+========================= */
 
 .badge {
   display: inline-flex;
@@ -703,8 +738,6 @@ tbody tr:last-child td {
   border: 1px solid #bbf7d0;
 }
 
-/* ROJO = DÉBITO */
-
 .badge-debit {
   color: var(--red);
 
@@ -713,9 +746,9 @@ tbody tr:last-child td {
   border: 1px solid #fecaca;
 }
 
-/* =========================================================
+/* =========================
    IMPACTO
-   ========================================================= */
+========================= */
 
 .impact-positive {
   color: var(--green);
@@ -729,9 +762,9 @@ tbody tr:last-child td {
   font-weight: 800;
 }
 
-/* =========================================================
-   ACCIONES DE TABLA
-   ========================================================= */
+/* =========================
+   ACCIONES
+========================= */
 
 .actions {
   display: flex;
@@ -739,8 +772,6 @@ tbody tr:last-child td {
 
   gap: 12px;
 }
-
-/* AZUL = EDITAR */
 
 .action-edit {
   padding: 0;
@@ -761,8 +792,6 @@ tbody tr:last-child td {
   text-decoration: underline;
 }
 
-/* ROJO = ELIMINAR */
-
 .action-delete {
   padding: 0;
 
@@ -782,9 +811,9 @@ tbody tr:last-child td {
   text-decoration: underline;
 }
 
-/* =========================================================
-   ESTADO VACÍO
-   ========================================================= */
+/* =========================
+   ESTADO VACIO
+========================= */
 
 .empty-state {
   display: flex;
@@ -837,9 +866,9 @@ tbody tr:last-child td {
   font-size: 11px;
 }
 
-/* =========================================================
+/* =========================
    LOADER
-   ========================================================= */
+========================= */
 
 .loader {
   width: 28px;
@@ -862,12 +891,283 @@ tbody tr:last-child td {
   }
 }
 
-/* =========================================================
+/* =========================
+   MODALES
+========================= */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.48);
+
+  backdrop-filter: blur(3px);
+
+  animation: modalOverlayIn 0.18s ease;
+}
+
+.modal {
+  width: min(560px, 100%);
+
+  max-height: calc(100vh - 40px);
+
+  overflow-y: auto;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  border-radius: 13px;
+
+  box-shadow: var(--modal-shadow);
+
+  animation: modalIn 0.2s ease;
+}
+
+.modal-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 19px;
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+}
+
+.modal-header p {
+  margin: 7px 0 0;
+
+  color: var(--gray-500);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.modal-close {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 30px;
+  height: 30px;
+
+  color: var(--gray-500);
+
+  background: var(--gray-100);
+
+  border: 1px solid var(--gray-200);
+
+  border-radius: 7px;
+
+  font-size: 20px;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: var(--gray-800);
+
+  background: var(--gray-200);
+}
+
+.modal-close:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+.modal-form {
+  padding: 22px 24px;
+}
+
+.modal-form .form-grid {
+  gap: 16px;
+}
+
+.modal-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 18px 24px;
+
+  border-top: 1px solid var(--border);
+}
+
+/* =========================
+   MODAL ELIMINAR
+========================= */
+
+.modal-delete {
+  width: min(460px, 100%);
+
+  padding-top: 25px;
+}
+
+.delete-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 15px;
+
+  color: var(--red);
+
+  background: var(--red-light);
+
+  border: 1px solid #fecaca;
+
+  border-radius: 50%;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.delete-content {
+  padding: 0 24px 20px;
+
+  text-align: center;
+}
+
+.delete-content h3 {
+  margin: 0;
+
+  color: var(--gray-900);
+
+  font-size: 19px;
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+}
+
+.delete-content > p {
+  margin: 9px auto 18px;
+
+  max-width: 360px;
+
+  color: var(--gray-500);
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+.delete-preview {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 8px;
+
+  padding: 12px;
+
+  text-align: left;
+
+  background: var(--gray-50);
+
+  border: 1px solid var(--gray-200);
+
+  border-radius: 8px;
+}
+
+.delete-preview div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.delete-preview span {
+  color: var(--gray-400);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.delete-preview strong {
+  color: var(--gray-800);
+
+  font-size: 11px;
+}
+
+/* =========================
+   ANIMACIONES MODAL
+========================= */
+
+@keyframes modalOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================
    FOOTER
-   ========================================================= */
+========================= */
 
 .footer {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -888,11 +1188,12 @@ tbody tr:last-child td {
   color: var(--gray-700);
 }
 
-/* =========================================================
+/* =========================
    RESPONSIVE
-   ========================================================= */
+========================= */
 
 @media (max-width: 800px) {
+
   .topbar {
     padding: 0 18px;
   }
@@ -914,9 +1215,14 @@ tbody tr:last-child td {
   .welcome h2 {
     font-size: 27px;
   }
+
+  .delete-preview {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
+
   .topbar {
     min-height: 64px;
   }
@@ -942,5 +1248,30 @@ tbody tr:last-child td {
   th,
   td {
     padding: 11px 13px;
+  }
+
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-header,
+  .modal-form {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+
+    padding: 15px 18px;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+  .delete-content {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 }

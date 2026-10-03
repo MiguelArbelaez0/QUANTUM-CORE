@@ -14,17 +14,21 @@ const EMPTY_FORM = {
 function App() {
   const [transacciones, setTransacciones] = useState([]);
   const [formulario, setFormulario] = useState(EMPTY_FORM);
+
   const [editandoId, setEditandoId] = useState(null);
+  const [transaccionEditando, setTransaccionEditando] = useState(null);
+  const [transaccionEliminando, setTransaccionEliminando] = useState(null);
 
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
 
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  /* =========================
-     CARGAR TRANSACCIONES
-     ========================= */
+  // =========================
+  // CARGAR TRANSACCIONES
+  // =========================
 
   const cargarTransacciones = async () => {
     try {
@@ -34,7 +38,9 @@ function App() {
       const respuesta = await fetch(`${BASE_URL}/`);
 
       if (!respuesta.ok) {
-        throw new Error("No fue posible consultar las transacciones.");
+        throw new Error(
+          "No fue posible consultar las transacciones."
+        );
       }
 
       const resultado = await respuesta.json();
@@ -49,7 +55,8 @@ function App() {
       setTransacciones(lista);
     } catch (err) {
       setError(
-        err.message || "Error al cargar las transacciones."
+        err.message ||
+          "Error al cargar las transacciones."
       );
     } finally {
       setCargando(false);
@@ -60,9 +67,9 @@ function App() {
     cargarTransacciones();
   }, []);
 
-  /* =========================
-     ESTADÍSTICAS
-     ========================= */
+  // =========================
+  // ESTADISTICAS
+  // =========================
 
   const estadisticas = useMemo(() => {
     const creditos = transacciones.filter(
@@ -94,9 +101,9 @@ function App() {
     };
   }, [transacciones]);
 
-  /* =========================
-     FORMULARIO
-     ========================= */
+  // =========================
+  // FORMULARIO PRINCIPAL
+  // =========================
 
   const cambiarCampo = (event) => {
     const { name, value } = event.target;
@@ -112,13 +119,8 @@ function App() {
 
   const limpiarFormulario = () => {
     setFormulario(EMPTY_FORM);
-    setEditandoId(null);
     setError("");
   };
-
-  /* =========================
-     CREAR / ACTUALIZAR
-     ========================= */
 
   const guardarTransaccion = async (event) => {
     event.preventDefault();
@@ -146,32 +148,25 @@ function App() {
         impacto: Number(formulario.impacto),
       };
 
-      const url = editandoId
-        ? `${BASE_URL}/${editandoId}`
-        : `${BASE_URL}/`;
-
-      const metodo = editandoId ? "PUT" : "POST";
-
-      const respuesta = await fetch(url, {
-        method: metodo,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datos),
-      });
+      const respuesta = await fetch(
+        `${BASE_URL}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(datos),
+        }
+      );
 
       if (!respuesta.ok) {
         throw new Error(
-          editandoId
-            ? "No fue posible actualizar la transacción."
-            : "No fue posible crear la transacción."
+          "No fue posible crear la transacción."
         );
       }
 
       setMensaje(
-        editandoId
-          ? "Transacción actualizada correctamente."
-          : "Transacción creada correctamente."
+        "Transacción creada correctamente."
       );
 
       limpiarFormulario();
@@ -179,55 +174,170 @@ function App() {
       await cargarTransacciones();
     } catch (err) {
       setError(
-        err.message || "Ocurrió un error."
+        err.message ||
+          "Ocurrió un error al crear la transacción."
       );
     } finally {
       setGuardando(false);
     }
   };
 
-  /* =========================
-     EDITAR
-     ========================= */
+  // =========================
+  // ABRIR MODAL EDITAR
+  // =========================
 
-  const editarTransaccion = (transaccion) => {
+  const abrirModalEditar = (transaccion) => {
     const id =
       transaccion.id ??
       transaccion.ID ??
       transaccion.Id;
 
+    setTransaccionEditando(transaccion);
     setEditandoId(id);
-
-    setFormulario({
-      codigo: transaccion.codigo ?? "",
-      tipo: String(
-        transaccion.tipo ?? "CREDITO"
-      ).toUpperCase(),
-      monto: transaccion.monto ?? "",
-      impacto: transaccion.impacto ?? "",
-    });
 
     setError("");
     setMensaje("");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
   };
 
-  /* =========================
-     ELIMINAR
-     ========================= */
+  // =========================
+  // CERRAR MODAL EDITAR
+  // =========================
 
-  const eliminarTransaccion = async (id) => {
-    const confirmar = window.confirm(
-      "¿Seguro que deseas eliminar esta transacción?"
-    );
+  const cancelarEdicion = () => {
+    if (guardando) return;
 
-    if (!confirmar) return;
+    setTransaccionEditando(null);
+    setEditandoId(null);
+    setError("");
+  };
+
+  // =========================
+  // CAMBIAR DATOS DEL MODAL
+  // =========================
+
+  const cambiarCampoEdicion = (event) => {
+    const { name, value } = event.target;
+
+    setTransaccionEditando((actual) => ({
+      ...actual,
+      [name]: value,
+    }));
+  };
+
+  // =========================
+  // CONFIRMAR EDICION
+  // =========================
+
+  const confirmarEdicion = async (event) => {
+    event.preventDefault();
+
+    if (!transaccionEditando) return;
+
+    if (
+      !String(
+        transaccionEditando.codigo || ""
+      ).trim() ||
+      transaccionEditando.monto === "" ||
+      transaccionEditando.impacto === ""
+    ) {
+      setError(
+        "Completa código, monto e impacto."
+      );
+      return;
+    }
 
     try {
+      setGuardando(true);
+      setError("");
+      setMensaje("");
+
+      const datos = {
+        codigo: String(
+          transaccionEditando.codigo
+        ).trim(),
+
+        tipo: String(
+          transaccionEditando.tipo ||
+            "CREDITO"
+        ).toUpperCase(),
+
+        monto: Number(
+          transaccionEditando.monto
+        ),
+
+        impacto: Number(
+          transaccionEditando.impacto
+        ),
+      };
+
+      const respuesta = await fetch(
+        `${BASE_URL}/${editandoId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(datos),
+        }
+      );
+
+      if (!respuesta.ok) {
+        throw new Error(
+          "No fue posible actualizar la transacción."
+        );
+      }
+
+      setMensaje(
+        "Transacción actualizada correctamente."
+      );
+
+      setTransaccionEditando(null);
+      setEditandoId(null);
+
+      await cargarTransacciones();
+    } catch (err) {
+      setError(
+        err.message ||
+          "Ocurrió un error al actualizar la transacción."
+      );
+    } finally {
+      setGuardando(false);
+    }
+  };
+
+  // =========================
+  // ABRIR MODAL ELIMINAR
+  // =========================
+
+  const abrirModalEliminar = (transaccion) => {
+    setTransaccionEliminando(transaccion);
+    setError("");
+  };
+
+  // =========================
+  // CANCELAR ELIMINACION
+  // =========================
+
+  const cancelarEliminacion = () => {
+    if (eliminando) return;
+
+    setTransaccionEliminando(null);
+  };
+
+  // =========================
+  // CONFIRMAR ELIMINACION
+  // =========================
+
+  const confirmarEliminacion = async () => {
+    if (!transaccionEliminando) return;
+
+    const id =
+      transaccionEliminando.id ??
+      transaccionEliminando.ID ??
+      transaccionEliminando.Id;
+
+    try {
+      setEliminando(true);
       setError("");
       setMensaje("");
 
@@ -244,9 +354,7 @@ function App() {
         );
       }
 
-      if (editandoId === id) {
-        limpiarFormulario();
-      }
+      setTransaccionEliminando(null);
 
       setMensaje(
         "Transacción eliminada correctamente."
@@ -256,14 +364,16 @@ function App() {
     } catch (err) {
       setError(
         err.message ||
-          "Ocurrió un error al eliminar."
+          "Ocurrió un error al eliminar la transacción."
       );
+    } finally {
+      setEliminando(false);
     }
   };
 
-  /* =========================
-     FORMATO DE MONEDA
-     ========================= */
+  // =========================
+  // FORMATEAR MONEDA
+  // =========================
 
   const formatearMoneda = (valor) => {
     return new Intl.NumberFormat("es-CO", {
@@ -273,16 +383,15 @@ function App() {
     }).format(Number(valor || 0));
   };
 
-  /* =========================
-     INTERFAZ
-     ========================= */
-
   return (
     <div className="app-shell">
 
-      {/* HEADER */}
+      {/* =========================
+          HEADER
+      ========================= */}
 
       <header className="topbar">
+
         <div className="brand">
 
           <div className="brand-logo">
@@ -291,6 +400,7 @@ function App() {
 
           <div>
             <h1>QUANTUM CORE</h1>
+
             <p>
               Gestión de transacciones empresariales
             </p>
@@ -302,16 +412,17 @@ function App() {
           <span className="status-dot"></span>
           <span>Sistema activo</span>
         </div>
+
       </header>
-
-
-      {/* CONTENIDO */}
 
       <main className="dashboard">
 
-        {/* TITULO */}
+        {/* =========================
+            BIENVENIDA
+        ========================= */}
 
         <section className="welcome">
+
           <span className="section-label">
             PANEL DE CONTROL
           </span>
@@ -324,21 +435,23 @@ function App() {
             Administra, consulta y controla las
             operaciones registradas en Quantum Core.
           </p>
+
         </section>
 
-
-        {/* ESTADÍSTICAS */}
+        {/* =========================
+            ESTADISTICAS
+        ========================= */}
 
         <section className="stats-grid">
 
-          {/* TOTAL */}
-
           <article className="stat-card">
+
             <div className="stat-icon blue">
               ▣
             </div>
 
             <div>
+
               <span>
                 Total de transacciones
               </span>
@@ -346,18 +459,19 @@ function App() {
               <strong>
                 {estadisticas.total}
               </strong>
+
             </div>
+
           </article>
 
-
-          {/* CRÉDITOS */}
-
           <article className="stat-card">
+
             <div className="stat-icon green">
               $
             </div>
 
             <div>
+
               <span>
                 Total créditos
               </span>
@@ -367,18 +481,19 @@ function App() {
                   estadisticas.creditos
                 )}
               </strong>
+
             </div>
+
           </article>
 
-
-          {/* DÉBITOS */}
-
           <article className="stat-card">
+
             <div className="stat-icon red">
               −
             </div>
 
             <div>
+
               <span>
                 Total débitos
               </span>
@@ -388,53 +503,41 @@ function App() {
                   estadisticas.debitos
                 )}
               </strong>
+
             </div>
+
           </article>
 
         </section>
 
-
-        {/* FORMULARIO */}
+        {/* =========================
+            CREAR TRANSACCION
+        ========================= */}
 
         <section className="panel">
 
           <div className="panel-header">
 
             <div>
+
               <span className="section-label">
-                {editandoId
-                  ? "ACTUALIZACIÓN"
-                  : "NUEVO REGISTRO"}
+                NUEVO REGISTRO
               </span>
 
               <h3>
-                {editandoId
-                  ? "Editar transacción"
-                  : "Registrar transacción"}
+                Registrar transacción
               </h3>
+
             </div>
 
-
-            {editandoId && (
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={limpiarFormulario}
-              >
-                Cancelar edición
-              </button>
-            )}
-
           </div>
-
 
           <form onSubmit={guardarTransaccion}>
 
             <div className="form-grid">
 
-              {/* CÓDIGO */}
-
               <div className="field">
+
                 <label htmlFor="codigo">
                   Código
                 </label>
@@ -443,16 +546,15 @@ function App() {
                   id="codigo"
                   name="codigo"
                   type="text"
-                  placeholder="Ej. T007"
+                  placeholder="Ej. T009"
                   value={formulario.codigo}
                   onChange={cambiarCampo}
                 />
+
               </div>
 
-
-              {/* TIPO */}
-
               <div className="field">
+
                 <label htmlFor="tipo">
                   Tipo de transacción
                 </label>
@@ -463,6 +565,7 @@ function App() {
                   value={formulario.tipo}
                   onChange={cambiarCampo}
                 >
+
                   <option value="CREDITO">
                     CRÉDITO
                   </option>
@@ -470,13 +573,13 @@ function App() {
                   <option value="DEBITO">
                     DÉBITO
                   </option>
+
                 </select>
+
               </div>
 
-
-              {/* MONTO */}
-
               <div className="field">
+
                 <label htmlFor="monto">
                   Monto
                 </label>
@@ -490,12 +593,11 @@ function App() {
                   value={formulario.monto}
                   onChange={cambiarCampo}
                 />
+
               </div>
 
-
-              {/* IMPACTO */}
-
               <div className="field">
+
                 <label htmlFor="impacto">
                   Impacto
                 </label>
@@ -508,12 +610,10 @@ function App() {
                   value={formulario.impacto}
                   onChange={cambiarCampo}
                 />
+
               </div>
 
             </div>
-
-
-            {/* MENSAJES */}
 
             {error && (
               <div className="error-message">
@@ -527,9 +627,6 @@ function App() {
               </div>
             )}
 
-
-            {/* BOTÓN */}
-
             <div className="form-actions">
 
               <button
@@ -537,11 +634,11 @@ function App() {
                 type="submit"
                 disabled={guardando}
               >
+
                 {guardando
                   ? "Guardando..."
-                  : editandoId
-                  ? "Guardar cambios"
                   : "Crear transacción"}
+
               </button>
 
             </div>
@@ -550,14 +647,16 @@ function App() {
 
         </section>
 
-
-        {/* REGISTROS */}
+        {/* =========================
+            TABLA
+        ========================= */}
 
         <section className="panel">
 
           <div className="panel-header">
 
             <div>
+
               <span className="section-label">
                 REGISTROS
               </span>
@@ -565,6 +664,7 @@ function App() {
               <h3>
                 Transacciones
               </h3>
+
             </div>
 
             <span className="record-count">
@@ -573,22 +673,19 @@ function App() {
 
           </div>
 
-
-          {/* CARGANDO */}
-
           {cargando ? (
 
             <div className="empty-state">
+
               <div className="loader"></div>
 
               <p>
                 Cargando transacciones...
               </p>
+
             </div>
 
           ) : transacciones.length === 0 ? (
-
-            /* SIN DATOS */
 
             <div className="empty-state">
 
@@ -609,13 +706,12 @@ function App() {
 
           ) : (
 
-            /* TABLA */
-
             <div className="table-wrapper">
 
               <table>
 
                 <thead>
+
                   <tr>
                     <th>ID</th>
                     <th>CÓDIGO</th>
@@ -624,8 +720,8 @@ function App() {
                     <th>IMPACTO</th>
                     <th>ACCIONES</th>
                   </tr>
-                </thead>
 
+                </thead>
 
                 <tbody>
 
@@ -648,12 +744,12 @@ function App() {
                         );
 
                       return (
+
                         <tr key={id}>
 
                           <td className="id-cell">
                             #{id}
                           </td>
-
 
                           <td>
                             <strong>
@@ -661,8 +757,8 @@ function App() {
                             </strong>
                           </td>
 
-
                           <td>
+
                             <span
                               className={`badge ${
                                 tipo === "CREDITO"
@@ -672,8 +768,8 @@ function App() {
                             >
                               {tipo}
                             </span>
-                          </td>
 
+                          </td>
 
                           <td className="amount">
                             {formatearMoneda(
@@ -681,8 +777,8 @@ function App() {
                             )}
                           </td>
 
-
                           <td>
+
                             <span
                               className={
                                 impacto >= 0
@@ -695,16 +791,18 @@ function App() {
                                 : ""}
                               {impacto}
                             </span>
+
                           </td>
 
-
                           <td>
+
                             <div className="actions">
 
                               <button
+                                type="button"
                                 className="action-edit"
                                 onClick={() =>
-                                  editarTransaccion(
+                                  abrirModalEditar(
                                     transaccion
                                   )
                                 }
@@ -713,10 +811,11 @@ function App() {
                               </button>
 
                               <button
+                                type="button"
                                 className="action-delete"
                                 onClick={() =>
-                                  eliminarTransaccion(
-                                    id
+                                  abrirModalEliminar(
+                                    transaccion
                                   )
                                 }
                               >
@@ -724,9 +823,11 @@ function App() {
                               </button>
 
                             </div>
+
                           </td>
 
                         </tr>
+
                       );
                     }
                   )}
@@ -743,26 +844,312 @@ function App() {
 
       </main>
 
+      {/* =========================
+          MODAL EDITAR
+      ========================= */}
 
-      {/* FOOTER */}
+      {transaccionEditando && (
 
-      <footer className="footer">
+        <div
+          className="modal-overlay"
+          onMouseDown={(event) => {
 
-        <div>
-          <strong>
-            QUANTUM CORE
-          </strong>
+            if (
+              event.target === event.currentTarget &&
+              !guardando
+            ) {
+              cancelarEdicion();
+            }
 
-          <span>
-            {" "}· Sistema de gestión empresarial
-          </span>
+          }}
+        >
+
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-editar-titulo"
+          >
+
+            <div className="modal-header">
+
+              <div>
+
+                <span className="section-label">
+                  ACTUALIZACIÓN
+                </span>
+
+                <h3 id="modal-editar-titulo">
+                  Editar transacción
+                </h3>
+
+                <p>
+                  Modifica los datos de la
+                  transacción y confirma los cambios.
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                className="modal-close"
+                onClick={cancelarEdicion}
+                disabled={guardando}
+                aria-label="Cerrar"
+              >
+                ×
+              </button>
+
+            </div>
+
+            <form
+              className="modal-form"
+              onSubmit={confirmarEdicion}
+            >
+
+              <div className="form-grid">
+
+                <div className="field">
+
+                  <label htmlFor="editar-codigo">
+                    Código
+                  </label>
+
+                  <input
+                    id="editar-codigo"
+                    name="codigo"
+                    type="text"
+                    value={
+                      transaccionEditando.codigo ?? ""
+                    }
+                    onChange={cambiarCampoEdicion}
+                    disabled={guardando}
+                  />
+
+                </div>
+
+                <div className="field">
+
+                  <label htmlFor="editar-tipo">
+                    Tipo de transacción
+                  </label>
+
+                  <select
+                    id="editar-tipo"
+                    name="tipo"
+                    value={
+                      String(
+                        transaccionEditando.tipo ||
+                          "CREDITO"
+                      ).toUpperCase()
+                    }
+                    onChange={cambiarCampoEdicion}
+                    disabled={guardando}
+                  >
+
+                    <option value="CREDITO">
+                      CRÉDITO
+                    </option>
+
+                    <option value="DEBITO">
+                      DÉBITO
+                    </option>
+
+                  </select>
+
+                </div>
+
+                <div className="field">
+
+                  <label htmlFor="editar-monto">
+                    Monto
+                  </label>
+
+                  <input
+                    id="editar-monto"
+                    name="monto"
+                    type="number"
+                    min="0"
+                    value={
+                      transaccionEditando.monto ?? ""
+                    }
+                    onChange={cambiarCampoEdicion}
+                    disabled={guardando}
+                  />
+
+                </div>
+
+                <div className="field">
+
+                  <label htmlFor="editar-impacto">
+                    Impacto
+                  </label>
+
+                  <input
+                    id="editar-impacto"
+                    name="impacto"
+                    type="number"
+                    value={
+                      transaccionEditando.impacto ?? ""
+                    }
+                    onChange={cambiarCampoEdicion}
+                    disabled={guardando}
+                  />
+
+                </div>
+
+              </div>
+
+              {error && (
+                <div className="error-message modal-message">
+                  {error}
+                </div>
+              )}
+
+              <div className="modal-actions">
+
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={cancelarEdicion}
+                  disabled={guardando}
+                >
+                  Cancelar edición
+                </button>
+
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={guardando}
+                >
+                  {guardando
+                    ? "Guardando..."
+                    : "Confirmar edición"}
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
         </div>
 
-        <span>
-          © 2026
-        </span>
+      )}
 
-      </footer>
+      {/* =========================
+          MODAL ELIMINAR
+      ========================= */}
+
+      {transaccionEliminando && (
+
+        <div
+          className="modal-overlay"
+          onMouseDown={(event) => {
+
+            if (
+              event.target === event.currentTarget &&
+              !eliminando
+            ) {
+              cancelarEliminacion();
+            }
+
+          }}
+        >
+
+          <div
+            className="modal modal-delete"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-eliminar-titulo"
+          >
+
+            <div className="delete-icon">
+              !
+            </div>
+
+            <div className="delete-content">
+
+              <h3 id="modal-eliminar-titulo">
+                ¿Eliminar transacción?
+              </h3>
+
+              <p>
+                ¿Seguro que quieres eliminar esta
+                transacción? Esta acción no se puede
+                deshacer.
+              </p>
+
+              <div className="delete-preview">
+
+                <div>
+                  <span>
+                    Código
+                  </span>
+
+                  <strong>
+                    {transaccionEliminando.codigo}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    Tipo
+                  </span>
+
+                  <strong>
+                    {String(
+                      transaccionEliminando.tipo ||
+                        ""
+                    ).toUpperCase()}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    Monto
+                  </span>
+
+                  <strong>
+                    {formatearMoneda(
+                      transaccionEliminando.monto
+                    )}
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div className="modal-actions">
+
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={cancelarEliminacion}
+                disabled={eliminando}
+              >
+                No, cancelar
+              </button>
+
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={confirmarEliminacion}
+                disabled={eliminando}
+              >
+                {eliminando
+                  ? "Eliminando..."
+                  : "Sí, eliminar"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );
