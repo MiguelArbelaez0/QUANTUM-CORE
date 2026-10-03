@@ -94,10 +94,15 @@ function App() {
       0
     );
 
+    // Saldo neto = créditos - débitos
+    const saldoNeto =
+      totalCreditos - totalDebitos;
+
     return {
       total: transacciones.length,
       creditos: totalCreditos,
       debitos: totalDebitos,
+      saldoNeto,
     };
   }, [transacciones]);
 
@@ -222,6 +227,8 @@ function App() {
       ...actual,
       [name]: value,
     }));
+
+    setError("");
   };
 
   // =========================
@@ -444,6 +451,8 @@ function App() {
 
         <section className="stats-grid">
 
+          {/* TOTAL TRANSACCIONES */}
+
           <article className="stat-card">
 
             <div className="stat-icon blue">
@@ -463,6 +472,8 @@ function App() {
             </div>
 
           </article>
+
+          {/* TOTAL CREDITOS */}
 
           <article className="stat-card">
 
@@ -486,6 +497,8 @@ function App() {
 
           </article>
 
+          {/* TOTAL DEBITOS */}
+
           <article className="stat-card">
 
             <div className="stat-icon red">
@@ -501,6 +514,30 @@ function App() {
               <strong>
                 {formatearMoneda(
                   estadisticas.debitos
+                )}
+              </strong>
+
+            </div>
+
+          </article>
+
+          {/* SALDO NETO */}
+
+          <article className="stat-card">
+
+            <div className="stat-icon blue">
+              $
+            </div>
+
+            <div>
+
+              <span>
+                Saldo neto
+              </span>
+
+              <strong>
+                {formatearMoneda(
+                  estadisticas.saldoNeto
                 )}
               </strong>
 
@@ -1083,6 +1120,7 @@ function App() {
               <div className="delete-preview">
 
                 <div>
+
                   <span>
                     Código
                   </span>
@@ -1090,9 +1128,11 @@ function App() {
                   <strong>
                     {transaccionEliminando.codigo}
                   </strong>
+
                 </div>
 
                 <div>
+
                   <span>
                     Tipo
                   </span>
@@ -1103,9 +1143,11 @@ function App() {
                         ""
                     ).toUpperCase()}
                   </strong>
+
                 </div>
 
                 <div>
+
                   <span>
                     Monto
                   </span>
@@ -1115,6 +1157,7 @@ function App() {
                       transaccionEliminando.monto
                     )}
                   </strong>
+
                 </div>
 
               </div>

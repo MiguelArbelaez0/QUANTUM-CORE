@@ -29,8 +29,11 @@
 
   --border: #e2e8f0;
 
-  --shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-  --modal-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  --shadow:
+    0 4px 14px rgba(15, 23, 42, 0.06);
+
+  --modal-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.18);
 }
 
 * {
@@ -43,9 +46,11 @@ html {
 
 body {
   margin: 0;
+
   min-width: 320px;
 
   background: var(--gray-50);
+
   color: var(--gray-900);
 
   font-family:
@@ -76,6 +81,7 @@ button {
 
 .app-shell {
   min-height: 100vh;
+
   background: var(--gray-50);
 }
 
@@ -85,6 +91,7 @@ button {
 
 .topbar {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -99,12 +106,15 @@ button {
 
 .brand {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
 }
 
 .brand-logo {
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -112,11 +122,13 @@ button {
   height: 42px;
 
   color: var(--white);
+
   background: var(--gray-900);
 
   border-radius: 10px;
 
   font-size: 18px;
+
   font-weight: 800;
 }
 
@@ -126,6 +138,7 @@ button {
   color: var(--gray-900);
 
   font-size: 17px;
+
   font-weight: 800;
 
   letter-spacing: -0.02em;
@@ -141,18 +154,23 @@ button {
 
 .system-status {
   display: inline-flex;
+
   align-items: center;
+
   gap: 7px;
 
   padding: 7px 11px;
 
   color: var(--green);
+
   background: var(--green-light);
 
   border: 1px solid #bbf7d0;
+
   border-radius: 999px;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -170,7 +188,10 @@ button {
 ========================= */
 
 .dashboard {
-  width: min(1080px, calc(100% - 40px));
+  width: min(
+    1080px,
+    calc(100% - 40px)
+  );
 
   margin: 0 auto;
 
@@ -193,6 +214,7 @@ button {
   color: var(--blue);
 
   font-size: 10px;
+
   font-weight: 800;
 
   letter-spacing: 0.14em;
@@ -206,6 +228,7 @@ button {
   color: var(--gray-900);
 
   font-size: 32px;
+
   line-height: 1.15;
 
   font-weight: 800;
@@ -229,7 +252,7 @@ button {
   display: grid;
 
   grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+    repeat(4, minmax(0, 1fr));
 
   gap: 14px;
 }
@@ -238,6 +261,7 @@ button {
   position: relative;
 
   display: flex;
+
   align-items: center;
 
   gap: 14px;
@@ -275,9 +299,11 @@ button {
 
 .stat-icon {
   position: relative;
+
   z-index: 1;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -289,6 +315,7 @@ button {
   border-radius: 9px;
 
   font-size: 15px;
+
   font-weight: 800;
 }
 
@@ -318,7 +345,10 @@ button {
 
 .stat-card > div:last-child {
   position: relative;
+
   z-index: 1;
+
+  min-width: 0;
 }
 
 .stat-card span {
@@ -329,6 +359,7 @@ button {
   color: var(--gray-500);
 
   font-size: 10px;
+
   font-weight: 700;
 
   letter-spacing: 0.07em;
@@ -342,7 +373,10 @@ button {
   color: var(--gray-900);
 
   font-size: 20px;
+
   font-weight: 800;
+
+  white-space: nowrap;
 }
 
 /* =========================
@@ -365,7 +399,9 @@ button {
 
 .panel-header {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   padding: 19px 22px;
@@ -379,6 +415,7 @@ button {
   color: var(--gray-900);
 
   font-size: 16px;
+
   font-weight: 800;
 }
 
@@ -401,6 +438,7 @@ button {
 
 .field {
   display: flex;
+
   flex-direction: column;
 
   gap: 7px;
@@ -410,6 +448,7 @@ button {
   color: var(--gray-700);
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -450,7 +489,17 @@ button {
   border-color: var(--blue);
 
   box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.09);
+    0 0 0 3px
+    rgba(37, 99, 235, 0.09);
+}
+
+.field input:disabled,
+.field select:disabled {
+  background: var(--gray-100);
+
+  color: var(--gray-500);
+
+  cursor: not-allowed;
 }
 
 /* =========================
@@ -471,6 +520,7 @@ button {
   border-radius: 7px;
 
   font-size: 11px;
+
   font-weight: 750;
 
   transition:
@@ -485,7 +535,8 @@ button {
   transform: translateY(-1px);
 
   box-shadow:
-    0 4px 10px rgba(21, 128, 61, 0.15);
+    0 4px 10px
+    rgba(21, 128, 61, 0.15);
 }
 
 .btn-primary:disabled {
@@ -498,6 +549,7 @@ button {
 
 .form-actions {
   display: flex;
+
   align-items: center;
 
   gap: 10px;
@@ -523,6 +575,7 @@ button {
   border-radius: 7px;
 
   font-size: 11px;
+
   font-weight: 700;
 
   transition:
@@ -560,6 +613,7 @@ button {
   border-radius: 7px;
 
   font-size: 11px;
+
   font-weight: 750;
 
   transition:
@@ -574,7 +628,8 @@ button {
   transform: translateY(-1px);
 
   box-shadow:
-    0 4px 10px rgba(220, 38, 38, 0.15);
+    0 4px 10px
+    rgba(220, 38, 38, 0.15);
 }
 
 .btn-danger:disabled {
@@ -603,6 +658,7 @@ button {
   border-radius: 7px;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -620,6 +676,7 @@ button {
   border-radius: 7px;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -633,6 +690,7 @@ button {
 
 .record-count {
   display: inline-flex;
+
   align-items: center;
 
   padding: 5px 9px;
@@ -646,6 +704,7 @@ button {
   border-radius: 999px;
 
   font-size: 10px;
+
   font-weight: 700;
 }
 
@@ -679,6 +738,7 @@ th {
   border-bottom: 1px solid var(--border);
 
   font-size: 9px;
+
   font-weight: 800;
 
   letter-spacing: 0.09em;
@@ -720,6 +780,7 @@ tbody tr:last-child td {
 
 .badge {
   display: inline-flex;
+
   align-items: center;
 
   padding: 4px 8px;
@@ -727,6 +788,7 @@ tbody tr:last-child td {
   border-radius: 5px;
 
   font-size: 9px;
+
   font-weight: 800;
 }
 
@@ -768,6 +830,7 @@ tbody tr:last-child td {
 
 .actions {
   display: flex;
+
   align-items: center;
 
   gap: 12px;
@@ -783,6 +846,7 @@ tbody tr:last-child td {
   border: none;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -802,6 +866,7 @@ tbody tr:last-child td {
   border: none;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
@@ -821,6 +886,7 @@ tbody tr:last-child td {
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
   min-height: 220px;
@@ -834,6 +900,7 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   width: 42px;
@@ -905,21 +972,25 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   padding: 20px;
 
-  background: rgba(15, 23, 42, 0.48);
+  background:
+    rgba(15, 23, 42, 0.48);
 
   backdrop-filter: blur(3px);
 
-  animation: modalOverlayIn 0.18s ease;
+  animation:
+    modalOverlayIn 0.18s ease;
 }
 
 .modal {
   width: min(560px, 100%);
 
-  max-height: calc(100vh - 40px);
+  max-height:
+    calc(100vh - 40px);
 
   overflow-y: auto;
 
@@ -931,13 +1002,15 @@ tbody tr:last-child td {
 
   box-shadow: var(--modal-shadow);
 
-  animation: modalIn 0.2s ease;
+  animation:
+    modalIn 0.2s ease;
 }
 
 .modal-header {
   display: flex;
 
   align-items: flex-start;
+
   justify-content: space-between;
 
   gap: 20px;
@@ -953,6 +1026,7 @@ tbody tr:last-child td {
   color: var(--gray-900);
 
   font-size: 19px;
+
   font-weight: 800;
 
   letter-spacing: -0.02em;
@@ -972,6 +1046,7 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   flex-shrink: 0;
@@ -988,6 +1063,7 @@ tbody tr:last-child td {
   border-radius: 7px;
 
   font-size: 20px;
+
   line-height: 1;
 }
 
@@ -1015,6 +1091,7 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: flex-end;
 
   gap: 10px;
@@ -1038,12 +1115,14 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   width: 46px;
   height: 46px;
 
-  margin: 0 auto 15px;
+  margin:
+    0 auto 15px;
 
   color: var(--red);
 
@@ -1054,11 +1133,13 @@ tbody tr:last-child td {
   border-radius: 50%;
 
   font-size: 19px;
+
   font-weight: 800;
 }
 
 .delete-content {
-  padding: 0 24px 20px;
+  padding:
+    0 24px 20px;
 
   text-align: center;
 }
@@ -1069,13 +1150,15 @@ tbody tr:last-child td {
   color: var(--gray-900);
 
   font-size: 19px;
+
   font-weight: 800;
 
   letter-spacing: -0.02em;
 }
 
 .delete-content > p {
-  margin: 9px auto 18px;
+  margin:
+    9px auto 18px;
 
   max-width: 360px;
 
@@ -1130,7 +1213,7 @@ tbody tr:last-child td {
 }
 
 /* =========================
-   ANIMACIONES MODAL
+   ANIMACIONES
 ========================= */
 
 @keyframes modalOverlayIn {
@@ -1169,13 +1252,18 @@ tbody tr:last-child td {
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
-  width: min(1080px, calc(100% - 40px));
+  width: min(
+    1080px,
+    calc(100% - 40px)
+  );
 
   margin: 0 auto;
 
-  padding: 20px 0 28px;
+  padding:
+    20px 0 28px;
 
   color: var(--gray-500);
 
@@ -1192,6 +1280,14 @@ tbody tr:last-child td {
    RESPONSIVE
 ========================= */
 
+@media (max-width: 1100px) {
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 800px) {
 
   .topbar {
@@ -1199,7 +1295,8 @@ tbody tr:last-child td {
   }
 
   .dashboard {
-    width: calc(100% - 28px);
+    width:
+      calc(100% - 28px);
 
     padding-top: 28px;
   }
@@ -1242,12 +1339,14 @@ tbody tr:last-child td {
   }
 
   .footer {
-    width: calc(100% - 28px);
+    width:
+      calc(100% - 28px);
   }
 
   th,
   td {
-    padding: 11px 13px;
+    padding:
+      11px 13px;
   }
 
   .modal-overlay {
@@ -1257,13 +1356,15 @@ tbody tr:last-child td {
   .modal-header,
   .modal-form {
     padding-left: 18px;
+
     padding-right: 18px;
   }
 
   .modal-actions {
     flex-direction: column-reverse;
 
-    padding: 15px 18px;
+    padding:
+      15px 18px;
   }
 
   .modal-actions button {
@@ -1272,6 +1373,7 @@ tbody tr:last-child td {
 
   .delete-content {
     padding-left: 18px;
+
     padding-right: 18px;
   }
 }

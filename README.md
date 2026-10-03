@@ -4,47 +4,87 @@ Sistema web Full-Stack para la gestión de transacciones empresariales, desarrol
 
 ## Descripción
 
-QUANTUM CORE es una aplicación web que permite registrar, consultar, actualizar y eliminar transacciones empresariales mediante una arquitectura cliente-servidor.
+QUANTUM CORE permite registrar, consultar, editar y eliminar transacciones mediante una arquitectura cliente-servidor.
 
-El proyecto integra un frontend desarrollado con React y Vite, un backend desarrollado con Python y Flask, una API REST para la comunicación entre ambos componentes y una base de datos MySQL administrada mediante Prisma y ejecutada localmente con Docker.
+Incluye un panel de estadísticas con:
 
-## Tecnologías utilizadas
+- Total de transacciones.
+- Total de créditos.
+- Total de débitos.
+- Saldo neto.
 
-### Frontend
+El saldo neto se calcula como:
 
+```text
+SALDO NETO = CRÉDITOS - DÉBITOS
+
+Tecnologías
+Frontend
 - React
 - Vite
 - JavaScript
 - CSS
 - Fetch API
-
-### Backend
-
+Backend
 - Python
 - Flask
 - Flask-CORS
 - Prisma ORM
 - API REST
-
-### Base de datos
-
+Base de datos
 - MySQL 8
 - Docker
+Arquitectura
+React + Vite
+     │
+     │ HTTP / JSON
+     ▼
+Python + Flask
+     │
+     ▼
+Prisma ORM
+     │
+     ▼
+MySQL
+     │
+     ▼
+Docker
 
-## Arquitectura
+Funcionalidades
+- CRUD completo de transacciones.
+- API REST.
+- Persistencia con MySQL.
+- Estadísticas financieras.
+- Cálculo de saldo neto.
+- Modales para edición y eliminación.
+- Validaciones.
+- Mensajes de éxito y error.
+- Interfaz responsive.
+Ejecución
+Backend
+cd Proyecto_Completo\BACKEND
+.\.venv\Scripts\Activate.ps1
+python app.py
 
-```text
-QUANTUM CORE
-│
-├── FRONTEND
-│   ├── React
-│   ├── Vite
-│   └── CSS
-│
-└── BACKEND
-    ├── Python
-    ├── Flask
-    ├── Prisma
-    └── MySQL
-         │
-         └── Docker
+Frontend
+cd Proyecto_Completo\FRONTEND
+npm install
+npm run dev
+
+Base de datos
+Iniciar MySQL mediante Docker:
+docker start empresa
+
+Frontend:
+http://localhost:5173
+
+Backend:
+http://127.0.0.1:5000
+
+Estado
+Proyecto terminado y funcional en entorno local.
+Autor
+Miguel Arbeláez Vallejo
+Ingeniería de Sistemas – CEIPA
+
+Este formato es más apropiado para **GitHub/portafolio**: muestra qué hace, tecnologías, arquitectura, funcionalidades
