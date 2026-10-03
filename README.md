@@ -86,5 +86,3 @@ Proyecto terminado y funcional en entorno local.
 Autor
 Miguel Arbeláez Vallejo
 Ingeniería de Sistemas – CEIPA
-
-Este formato es más apropiado para **GitHub/portafolio**: muestra qué hace, tecnologías, arquitectura, funcionalidades
